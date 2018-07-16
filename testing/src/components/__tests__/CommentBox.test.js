@@ -30,4 +30,28 @@ it('has a text area that users can type in', () => {
     component.update();/*defined by enzyme*/
     //asertion
     expect(component.find('textarea').prop('value')).toEqual('test');
-})
+});
+
+it('text area is empty after submit', () => {
+    //trigger the event of submit form
+    component.find('textarea').simulate('change', {
+        target: { value: "test" }
+    });
+    //get force the component updat
+    component.update();
+
+    /*The second argument is optional and has a default value of {}.
+    This object will be merged with the actual event object, and then passed to the event handlers.
+
+    So, the event handlers will receive something like:
+    event = { ...originalEventObject, ...objectFromSecondArgument }
+
+    When there is no second argument provided:
+    event = { ...originalEventObject, ...{} }, which has the same values of the original event object.
+
+    And since there is a method named 'preventDefault' inside the original event object, event.preventDefault() can be called.*/
+    component.find('form').simulate('submit');
+
+    //get the value of textarea and assertion
+    expect(component.find('textarea').prop('value')).toEqual('');
+});
